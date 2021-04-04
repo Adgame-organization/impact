@@ -1,17 +1,17 @@
 class RiverLine extends Line {
   constructor(x, y) {
     super(x, y);
-    let speed = random(-2,2);
-    let space = random(300,350);
+    let speed = random([grid/50,grid/40]);
+    let space = random([grid*3,grid*4,grid*5]);
     for (let i = 0; i < 3; i++) {
-      let x = i * 200 + space;
+      let x = i * space;
       logs[logIndex] = new Log(x, this.y+2, grid * 2, grid-4,speed);
       logIndex++;
     }
   }
  show(){
-   noStroke();
+   // noStroke();
         fill(41,235,122);
-        rect(this.x, this.y, width, grid);
+        rect(this.x, this.y, width, grid+speedY);
   }
 }

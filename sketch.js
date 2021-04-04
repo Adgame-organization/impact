@@ -23,6 +23,11 @@ var screen = 0;
 var score = 0;
 let timer =0;
 let started = false;
+let mXStart = 0;
+let mYStart = 0;
+let mXEnd = 0;
+let mYEnd = 0;
+
 
 let charPosition = 1;
 
@@ -67,7 +72,9 @@ function preload() {
 }
 
 function setupGame() {
-  createCanvas(450, 900);
+  grid = windowHeight/18;
+  textSize(grid/2.5);
+  createCanvas(grid*9, grid*18);
   frog = new Frog(width / 2 - grid / 2, height - grid + 2.5, grid - 5);
   frog.attach(null);
   let indexRoad = 0;
@@ -98,12 +105,13 @@ function setupGame() {
 }
 
 function setup() {
+  // frameRate(30)
   setupGame();
 }
 
 function draw() {
   if(started){
-    score=ceil((timer+50)/1000);
+    score=ceil((timer+50)/1000)*10;
     timer += 50
   }
   if (screen == 0) {
@@ -118,12 +126,11 @@ function draw() {
 function keyPressed() {
   if (keyCode === UP_ARROW) {
     frog.move(0, -1);
-    speedY = 0.25;
     if(screen == 1){
       started=true;
     }
     charPosition=1
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === DOWN_ARROW&& started) {
     frog.move(0, 1);
     charPosition=2
   } else if (keyCode === RIGHT_ARROW) {
@@ -142,7 +149,6 @@ function startScreen() {
   background(96, 157, 255)
   fill(255)
   textAlign(CENTER);
-  text('WELCOME TO MY CATCHING GAME', width / 2, height / 2)
   text('click to start', width / 2, height / 2 + 20);
 }
 
@@ -155,7 +161,7 @@ function endScreen() {
 }
 
 function gameOn() {
-  background(0);
+  background(41,235,122);
   safetyLine0.show();
   safetyLine0.update();
   safetyLine1.show();
@@ -219,10 +225,24 @@ function gameOn() {
   frog.show();
   push();
   fill('white')
-  textSize(20);
   textStyle(BOLD);
   text("SCORE : " + score, 80, 40)
   pop();
+  if(score==0){
+    speedY=0
+  }
+  else if(score>0 && score < 500){
+    speedY=grid/200
+  }
+  else if(score>500 && score<700){
+    speedY=grid/100
+  }
+  else if(score>700&&score<1000){
+    speedY=grid/80
+  }
+  else if(score>1000){
+    speedY=grid/50
+  }
 }
 
 function mousePressed() {
@@ -231,4 +251,35 @@ function mousePressed() {
   } else if (screen == 2) {
     screen = 0
   }
+}
+
+function touchStarted() {
+   mXStart = mouseX;
+   mYStart = mouseY;
+}
+function touchEnded(event) {
+   mXEnd = mouseX;
+   mYEnd = mouseY;
+  if (mYStart>mYEnd && Math.abs(mXStart-mXEnd)<grid) {
+    frog.move(0, -1);
+    if(screen == 1){
+      started=true;
+    }
+    charPosition=1
+  } 
+  else if (mYStart<mYEnd && started && Math.abs(mXStart-mXEnd)<grid) {
+    frog.move(0, 1);
+    charPosition=2
+  } 
+  else if (mXStart<mXEnd&& Math.abs(mXStart-mXEnd)>grid) {
+    frog.move(1, 0);
+    charPosition=3
+  } else if (mXStart>mXEnd&& Math.abs(mXStart-mXEnd)>grid) {
+    frog.move(-1, 0);
+    charPosition=4
+  }
+  mXStart = 0;
+  mYStart = 0;
+  mXEnd = 0;
+  mYEnd = 0;
 }

@@ -19,14 +19,14 @@ class Car extends Rectangle {
   }
   update() {
     this.x += this.speedX;
-    if (this.speedX > 0 && this.x > width + 100) {
+    if (this.speedX > 0 && this.x > width + this.width) {
       this.x = 0;
-    } else if (this.speedX < 0 && this.x < -this.width - 100) {
-      this.x = width + 100;
+    } else if (this.speedX < 0 && this.x < -this.width ) {
+      this.x = width ;
     }
     this.y += speedY;
-    if (speedY > 0 && this.y > height) {
-      this.y = -grid + speedY;
+    if (this.y >= height) {
+      this.y = -grid ;
     }
   }
 }

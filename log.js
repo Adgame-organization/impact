@@ -1,11 +1,3 @@
-// class Log extends Car {
-//     constructor(x, y, width, height, speedX) {
-//         super(x, y, width, height, speedX);
-//     }
-//     show(){
-//         image(logImg,this.x, this.y, this.width, this.height)
-//     }
-// }
 
 class Log extends Rectangle {
   constructor(x, y, width, height, speedX) {
@@ -23,8 +15,8 @@ class Log extends Rectangle {
       this.x = width + grid;
     }
     this.y += speedY;
-    if (speedY > 0 && this.y > height) {
-      this.y = -grid + speedY;
+    if (this.y >= height) {
+      this.y = -grid ;
     }
   }
 }

@@ -7,9 +7,9 @@ class Tree extends Rectangle {
   
   update() {
     this.y += speedY;
-    if (speedY > 0 && this.y > height) {
+    if (this.y >= height) {
       this.appear = random([true,false])
-      this.y = -grid + speedY;
+      this.y = -grid ;
     }
   }
   show() {
